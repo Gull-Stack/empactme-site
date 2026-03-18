@@ -1,0 +1,71 @@
+{
+  "lastUpdated": "2026-03-18T16:27:00Z",
+  "phases": [
+    {
+      "id": "phase-1a",
+      "name": "Phase 1A: Transportation Marketplace",
+      "description": "Connect companies needing transport promotion with influencers. Commission-based revenue model.",
+      "status": "in-progress",
+      "targetDate": "2026-04-15",
+      "tasks": [
+        { "name": "Project setup & architecture", "status": "done" },
+        { "name": "Authentication & user roles (Company, Influencer, Admin)", "status": "in-progress" },
+        { "name": "Company onboarding wizard", "status": "planned" },
+        { "name": "Influencer onboarding & profile", "status": "planned" },
+        { "name": "Transportation service catalog", "status": "planned" },
+        { "name": "Basic matching (company ↔ influencer)", "status": "planned" },
+        { "name": "Stripe Connect payments (5% GM)", "status": "planned" },
+        { "name": "Company dashboard", "status": "planned" },
+        { "name": "Influencer dashboard", "status": "planned" },
+        { "name": "Notification system (email + in-app)", "status": "planned" }
+      ]
+    },
+    {
+      "id": "phase-1b",
+      "name": "Phase 1B: E-Video Cards",
+      "description": "Cameo-style celebrity video messages. Birthday wishes, anniversaries, encouragement, and custom messages.",
+      "status": "planned",
+      "targetDate": "2026-04-30",
+      "tasks": [
+        { "name": "Video request & fulfillment flow", "status": "planned" },
+        { "name": "Influencer pricing tiers", "status": "planned" },
+        { "name": "Video categories (birthday, anniversary, custom)", "status": "planned" },
+        { "name": "Payment processing & influencer payouts", "status": "planned" },
+        { "name": "QC / approval workflow", "status": "planned" },
+        { "name": "Delivery & notification", "status": "planned" }
+      ]
+    },
+    {
+      "id": "phase-1c",
+      "name": "Phase 1C: Influencer-Company Campaigns",
+      "description": "Full product catalog, AI matching, campaign management, e-contracts, and dual dashboards.",
+      "status": "planned",
+      "targetDate": "2026-05-30",
+      "tasks": [
+        { "name": "Product catalog (Excel upload → PIM)", "status": "planned" },
+        { "name": "BI matching algorithm", "status": "planned" },
+        { "name": "Campaign creation → approval → execution", "status": "planned" },
+        { "name": "E-contract system (digital signatures)", "status": "planned" },
+        { "name": "Advanced dual dashboards", "status": "planned" },
+        { "name": "Campaign analytics & ROI tracking", "status": "planned" },
+        { "name": "Campaign settlement & payouts", "status": "planned" }
+      ]
+    },
+    {
+      "id": "phase-2",
+      "name": "Phase 2: Platform Expansion",
+      "description": "Social integrations, subscriptions, logistics hubs, live events, mobile apps.",
+      "status": "planned",
+      "targetDate": "2026-08-30",
+      "tasks": [
+        { "name": "Social media integrations (IG, TikTok, FB, X)", "status": "planned" },
+        { "name": "Tiered subscriptions", "status": "planned" },
+        { "name": "Hub network (logistics/fulfillment)", "status": "planned" },
+        { "name": "Live Q&A / event rooms", "status": "planned" },
+        { "name": "Charity program", "status": "planned" },
+        { "name": "Rewards system", "status": "planned" },
+        { "name": "Mobile apps", "status": "planned" }
+      ]
+    }
+  ]
+}

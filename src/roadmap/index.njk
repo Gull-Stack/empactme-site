@@ -1,0 +1,136 @@
+---
+layout: base.njk
+title: Roadmap
+description: See what we're building and where we're headed. Live project status.
+extraStyles: |
+  <style>
+    .roadmap-header { padding: 60px 0 40px; text-align: center; }
+    .roadmap-header h1 { font-size: 2.5rem; margin-bottom: 12px; }
+    .roadmap-header p { color: var(--text-muted); font-size: 1.05rem; }
+    .last-updated { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 40px; text-align: center; }
+    .phase { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; margin-bottom: 28px; }
+    .phase-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; }
+    .phase-title { font-size: 1.4rem; }
+    .phase-desc { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 20px; }
+    .badge { padding: 4px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+    .badge-done { background: rgba(0, 230, 138, 0.15); color: var(--green); }
+    .badge-in-progress { background: rgba(124, 92, 252, 0.15); color: var(--accent); }
+    .badge-planned { background: rgba(136, 136, 160, 0.15); color: var(--text-muted); }
+    .target { color: var(--text-muted); font-size: 0.85rem; }
+    .progress-bar { width: 100%; height: 8px; background: var(--surface-2); border-radius: 4px; overflow: hidden; margin-bottom: 20px; }
+    .progress-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+    .progress-fill-done { background: var(--green); }
+    .progress-fill-progress { background: linear-gradient(90deg, var(--accent), var(--cyan)); }
+    .task-list { list-style: none; }
+    .task-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 0.95rem; }
+    .task-item:last-child { border-bottom: none; }
+    .task-icon { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; flex-shrink: 0; }
+    .task-done .task-icon { background: var(--green); color: #000; }
+    .task-in-progress .task-icon { background: var(--accent); color: #fff; }
+    .task-planned .task-icon { background: var(--surface-2); border: 2px solid var(--border); }
+    .task-done .task-name { color: var(--green); }
+    .task-in-progress .task-name { color: var(--text); }
+    .task-planned .task-name { color: var(--text-muted); }
+    .summary-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 40px; }
+    .summary-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; text-align: center; }
+    .summary-number { font-size: 2rem; font-weight: 800; font-family: 'Young Serif', serif; }
+    .summary-label { color: var(--text-muted); font-size: 0.85rem; margin-top: 4px; }
+    .loading { text-align: center; padding: 60px; color: var(--text-muted); }
+  </style>
+---
+
+<section class="roadmap-header">
+  <div class="container">
+    <h1>Product Roadmap</h1>
+    <p>What we're building, where we are, and what's coming next.</p>
+  </div>
+</section>
+
+<div class="container">
+  <div class="last-updated" id="lastUpdated"></div>
+  <div class="summary-cards" id="summaryCards"></div>
+  <div id="roadmapContent"><div class="loading">Loading roadmap...</div></div>
+</div>
+
+<script>
+(async function() {
+  try {
+    const res = await fetch('/roadmap.json?t=' + Date.now());
+    const data = await res.json();
+    
+    // Update timestamp
+    const updated = new Date(data.lastUpdated);
+    document.getElementById('lastUpdated').textContent = 'Last updated: ' + updated.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' });
+    
+    // Count totals
+    let totalDone = 0, totalProgress = 0, totalPlanned = 0;
+    data.phases.forEach(p => p.tasks.forEach(t => {
+      if (t.status === 'done') totalDone++;
+      else if (t.status === 'in-progress') totalProgress++;
+      else totalPlanned++;
+    }));
+    const total = totalDone + totalProgress + totalPlanned;
+    
+    document.getElementById('summaryCards').innerHTML = `
+      <div class="summary-card">
+        <div class="summary-number" style="color: var(--green);">${totalDone}</div>
+        <div class="summary-label">Completed</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-number" style="color: var(--accent);">${totalProgress}</div>
+        <div class="summary-label">In Progress</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-number" style="color: var(--text-muted);">${totalPlanned}</div>
+        <div class="summary-label">Planned</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-number" style="color: var(--cyan);">${Math.round((totalDone / total) * 100)}%</div>
+        <div class="summary-label">Overall Progress</div>
+      </div>
+    `;
+    
+    // Render phases
+    let html = '';
+    data.phases.forEach(phase => {
+      const done = phase.tasks.filter(t => t.status === 'done').length;
+      const progress = phase.tasks.filter(t => t.status === 'in-progress').length;
+      const pTotal = phase.tasks.length;
+      const pct = Math.round(((done + progress * 0.5) / pTotal) * 100);
+      
+      const badgeClass = phase.status === 'done' ? 'badge-done' : phase.status === 'in-progress' ? 'badge-in-progress' : 'badge-planned';
+      const badgeText = phase.status === 'done' ? 'Complete' : phase.status === 'in-progress' ? 'In Progress' : 'Planned';
+      const fillClass = phase.status === 'done' ? 'progress-fill-done' : 'progress-fill-progress';
+      
+      const target = new Date(phase.targetDate);
+      const targetStr = target.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+      
+      html += `<div class="phase">
+        <div class="phase-header">
+          <h2 class="phase-title">${phase.name}</h2>
+          <div style="display:flex;gap:12px;align-items:center;">
+            <span class="target">Target: ${targetStr}</span>
+            <span class="badge ${badgeClass}">${badgeText}</span>
+          </div>
+        </div>
+        <p class="phase-desc">${phase.description}</p>
+        <div class="progress-bar"><div class="progress-fill ${fillClass}" style="width:${pct}%"></div></div>
+        <ul class="task-list">`;
+      
+      phase.tasks.forEach(task => {
+        const icon = task.status === 'done' ? '✓' : task.status === 'in-progress' ? '→' : '';
+        html += `<li class="task-item task-${task.status}">
+          <div class="task-icon">${icon}</div>
+          <span class="task-name">${task.name}</span>
+        </li>`;
+      });
+      
+      html += `</ul></div>`;
+    });
+    
+    document.getElementById('roadmapContent').innerHTML = html;
+  } catch(e) {
+    document.getElementById('roadmapContent').innerHTML = '<p style="text-align:center;color:var(--red);">Failed to load roadmap data.</p>';
+  }
+})();
+</script>

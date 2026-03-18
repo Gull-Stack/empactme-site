@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }} | EmpactMe</title>
+  <meta name="description" content="{{ description or 'EmpactMe — The influencer-commerce marketplace' }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Young+Serif&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: #12121a;
+      --surface-2: #1a1a26;
+      --border: #2a2a3a;
+      --text: #e8e8f0;
+      --text-muted: #8888a0;
+      --accent: #7c5cfc;
+      --accent-glow: rgba(124, 92, 252, 0.3);
+      --cyan: #00d4ff;
+      --green: #00e68a;
+      --yellow: #ffd000;
+      --red: #ff4466;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    h1, h2, h3 { font-family: 'Young Serif', serif; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+    a { color: var(--cyan); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+  {{ extraStyles | safe }}
+</head>
+<body>
+  <nav style="padding: 20px 0; border-bottom: 1px solid var(--border);">
+    <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+      <a href="/" style="font-family: 'Young Serif', serif; font-size: 1.5rem; color: var(--text);">
+        Empact<span style="color: var(--accent);">Me</span>
+      </a>
+      <div style="display: flex; gap: 24px;">
+        <a href="/">Home</a>
+        <a href="/roadmap/">Roadmap</a>
+      </div>
+    </div>
+  </nav>
+  
+  {{ content | safe }}
+
+  <footer style="padding: 40px 0; border-top: 1px solid var(--border); margin-top: 80px;">
+    <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+      <p style="color: var(--text-muted); font-size: 0.85rem;">&copy; 2026 EmpactMe. All rights reserved.</p>
+      <p style="color: var(--text-muted); font-size: 0.85rem;">Built by <a href="https://gullstack.com" style="color: var(--accent);">GullStack</a></p>
+    </div>
+  </footer>
+</body>
+</html>
